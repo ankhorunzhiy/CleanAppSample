@@ -35,7 +35,7 @@ public class GetUserList extends UseCase {
 
   @Inject
   public GetUserList(UserRepository userRepository, ThreadExecutor threadExecutor,
-      PostExecutionThread postExecutionThread) {
+                     PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);
     this.userRepository = userRepository;
   }
@@ -43,4 +43,5 @@ public class GetUserList extends UseCase {
   @Override public Observable buildUseCaseObservable() {
     return this.userRepository.users();
   }
+
 }

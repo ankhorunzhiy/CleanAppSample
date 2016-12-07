@@ -4,11 +4,11 @@ package com.cleanappsample.entity.mapper;
 import com.cleanappsample.domain.User;
 import com.cleanappsample.entity.UserEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
+
+import rx.Observable;
 
 /**
  * Created by Anton Khorunzhyi on 10/25/2016.
@@ -32,16 +32,10 @@ public class UserEntityMapper {
         return user;
     }
 
-    public List<User> convert(List<UserEntity> userEntities){
-        List<User> userList = new ArrayList<>();
-        if(userEntities != null && !userEntities.isEmpty()){
-            for (UserEntity userEntity : userEntities) {
-                User user = convert(userEntity);
-                if(user != null){
-                    userList.add(user);
-                }
-            }
-        }
-        return userList;
+    public Observable<List<User>> convert(List<UserEntity> userEntities){
+        return Observable.from(userEntities)
+                .map(this::convert)
+                .filter(user -> user != null)
+                .toList();
     }
 }
