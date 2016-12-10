@@ -15,6 +15,7 @@
  */
 package com.cleanappsample.domain.repository;
 
+import com.cleanappsample.domain.ActionWrapper;
 import com.cleanappsample.domain.User;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public interface UserRepository {
   /**
    * Get an {@link rx.Observable} which will emit a List of {@link User}.
    */
-  Observable<List<User>> users();
+  Observable<ActionWrapper<List<User>>> users();
 
   /**
    * Get an {@link rx.Observable} which will emit a {@link User}.

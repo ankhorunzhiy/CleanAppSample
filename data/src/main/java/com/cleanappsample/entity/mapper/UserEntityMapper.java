@@ -1,6 +1,9 @@
 package com.cleanappsample.entity.mapper;
 
 
+import com.cleanappsample.actions.UsersAction;
+import com.cleanappsample.domain.ActionWrapper;
+import com.cleanappsample.domain.JanetExceptionWrapper;
 import com.cleanappsample.domain.User;
 import com.cleanappsample.entity.UserEntity;
 
@@ -8,6 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.techery.janet.ActionState;
 import rx.Observable;
 
 /**
@@ -20,7 +24,7 @@ public class UserEntityMapper {
     public UserEntityMapper() {
     }
 
-    public User convert(UserEntity userEntity){
+    public User convert(UserEntity userEntity) {
         User user = User.builder()
                 .userId(userEntity.id())
                 .coverUrl(userEntity.coverUrl())
@@ -32,10 +36,32 @@ public class UserEntityMapper {
         return user;
     }
 
-    public Observable<List<User>> convert(List<UserEntity> userEntities){
-        return Observable.from(userEntities)
+    public Observable<ActionWrapper<List<User>>> convert(ActionState<UsersAction> userEntities) {
+        return Observable.from(userEntities.action.getResponse())
                 .map(this::convert)
                 .filter(user -> user != null)
-                .toList();
+                .toList()
+                .map(users -> convertToDomainModel(userEntities, users));
+    }
+
+    private ActionWrapper<List<User>> convertToDomainModel(ActionState<UsersAction> userEntities, List<User> users) {
+        ActionState.Status status = userEntities.status;
+        ActionWrapper.Status domainStatus = null;
+        switch (status) {
+            case FAIL:
+                domainStatus = ActionWrapper.Status.FAIL;
+                break;
+            case PROGRESS:
+                domainStatus = ActionWrapper.Status.PROGRESS;
+                break;
+            case START:
+                domainStatus = ActionWrapper.Status.START;
+                break;
+            case SUCCESS:
+                domainStatus = ActionWrapper.Status.SUCCESS;
+                break;
+        }
+        JanetExceptionWrapper janetExceptionWrapper = new JanetExceptionWrapper(userEntities.exception.getMessage(), userEntities.exception.getCause());
+        return new ActionWrapper<>(domainStatus, janetExceptionWrapper, userEntities.progress, users);
     }
 }
