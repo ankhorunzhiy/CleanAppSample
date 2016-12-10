@@ -13,9 +13,6 @@ import com.cleanappsample.entity.mapper.UserEntityMapper;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import rx.Observable;
 
 /**
@@ -23,8 +20,7 @@ import rx.Observable;
  */
 public class UserDataRepository implements UserRepository {
 
-    @Inject
-    UsersManager usersManager;
+    private UsersManager usersManager;
 
     public UserDataRepository() {
         this.usersManager = new UsersManager();

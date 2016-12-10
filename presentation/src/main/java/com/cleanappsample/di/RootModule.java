@@ -50,11 +50,6 @@ public class RootModule {
     }
 
     @Provides
-    UsersManager provideUsersManager() {
-        return new UsersManager();
-    }
-
-    @Provides
     UserCache provideUserCache(PreferenceManager preferenceManager, Context context, Gson gson) {
         return new UserCacheImpl(preferenceManager, context, gson);
     }
