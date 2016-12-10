@@ -23,6 +23,7 @@ import rx.Observable;
  */
 public class UserDataRepository implements UserRepository {
 
+    @Inject
     UsersManager usersManager;
 
     public UserDataRepository() {

@@ -100,6 +100,7 @@ public class FriendListScreen extends Path {
     @dagger.Component(dependencies = MainActivity.Component.class)
     public interface Component {
         void inject(FriendListView friendListView);
+        void inject(UserDataRepository userDataRepository);
     }
 
 }
