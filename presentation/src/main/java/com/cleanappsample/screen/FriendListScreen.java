@@ -16,34 +16,32 @@
 package com.cleanappsample.screen;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.cleanappsample.MainActivity;
 import com.cleanappsample.R;
+import com.cleanappsample.UIThread;
 import com.cleanappsample.cache.UserCacheImpl;
+import com.cleanappsample.domain.ActionWrapper;
+import com.cleanappsample.domain.interactor.GetUserList;
 import com.cleanappsample.domain.interactor.UseCase;
-import com.cleanappsample.mapper.UserDataMapper;
-import com.cleanappsample.actions.UsersAction;
-import com.cleanappsample.di.UsersManager;
-import com.cleanappsample.model.UserModel;
 import com.cleanappsample.entity.UserEntity;
+import com.cleanappsample.executor.JobExecutor;
+import com.cleanappsample.mapper.UserDataMapper;
+import com.cleanappsample.model.UserModel;
+import com.cleanappsample.repository.UserDataRepository;
 import com.cleanappsample.view.FriendListView;
 
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import flow.Flow;
 import flow.path.Path;
-import io.techery.janet.helper.ActionStateSubscriber;
 import io.techery.presenta.addition.flow.path.Layout;
 import io.techery.presenta.di.ScreenScope;
 import io.techery.presenta.mortarscreen.component.WithComponent;
 import mortar.ViewPresenter;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 
 @Layout(R.layout.friend_list_view) @WithComponent(FriendListScreen.Component.class)
 public class FriendListScreen extends Path {
@@ -58,26 +56,26 @@ public class FriendListScreen extends Path {
         UserCacheImpl userCache;
 
         @Inject
-        public Presenter(@Named("userList") UseCase getUserListUserCase) {
-            this.getUserListUserCase = getUserListUserCase;
+        public Presenter() {
+            this.getUserListUserCase = new GetUserList(new UserDataRepository(), new JobExecutor(), new UIThread());
         }
 
         @Override
         public void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            getUserListUserCase.execute(new Subscriber<List<UserEntity>>() {
+            getUserListUserCase.execute(new Subscriber<ActionWrapper<List<UserEntity>>>() {
                 @Override
                 public void onCompleted() {
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    System.err.println("Request failed " + e);
+                    e.printStackTrace();
                 }
 
                 @Override
-                public void onNext(List<UserEntity> o) {
-                    processUsers(o);
+                public void onNext(ActionWrapper<List<UserEntity>> o) {
+                    processUsers(o.data);
                 }
             });
         }

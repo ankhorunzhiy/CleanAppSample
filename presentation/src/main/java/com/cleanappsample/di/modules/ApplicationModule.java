@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.cleanappsample.CleanSampleApplication;
 import com.cleanappsample.cache.PreferenceManager;
+import com.cleanappsample.repository.UserDataRepository;
 
 import dagger.Module;
 import dagger.Provides;
@@ -29,4 +30,5 @@ public class ApplicationModule {
     PreferenceManager providePreferenceHelper(Context context){
         return new PreferenceManager(context);
     }
+
 }

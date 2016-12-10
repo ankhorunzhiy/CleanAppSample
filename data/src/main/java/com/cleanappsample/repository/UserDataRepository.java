@@ -23,8 +23,11 @@ import rx.Observable;
  */
 public class UserDataRepository implements UserRepository {
 
-    @Inject
     UsersManager usersManager;
+
+    public UserDataRepository() {
+        this.usersManager = new UsersManager();
+    }
 
     @Override
     public Observable<ActionWrapper<List<User>>> users() {

@@ -9,4 +9,8 @@ public class JanetExceptionWrapper extends Throwable {
     public JanetExceptionWrapper(String message, Throwable cause) {
         super(message, cause);
     }
+
+    public JanetExceptionWrapper() {
+
+    }
 }

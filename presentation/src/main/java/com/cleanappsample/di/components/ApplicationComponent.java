@@ -6,7 +6,6 @@ import com.cleanappsample.cache.UserCacheImpl;
 import com.cleanappsample.di.RootModule;
 import com.cleanappsample.di.UsersManager;
 import com.cleanappsample.di.modules.ApplicationModule;
-
 import com.cleanappsample.di.modules.UtilsModule;
 
 import dagger.Component;

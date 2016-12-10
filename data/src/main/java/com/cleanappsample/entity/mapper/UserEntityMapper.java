@@ -61,7 +61,12 @@ public class UserEntityMapper {
                 domainStatus = ActionWrapper.Status.SUCCESS;
                 break;
         }
-        JanetExceptionWrapper janetExceptionWrapper = new JanetExceptionWrapper(userEntities.exception.getMessage(), userEntities.exception.getCause());
+        JanetExceptionWrapper janetExceptionWrapper;
+        if (userEntities.exception != null) {
+            janetExceptionWrapper = new JanetExceptionWrapper(userEntities.exception.getMessage(), userEntities.exception.getCause());
+        } else {
+            janetExceptionWrapper = new JanetExceptionWrapper();
+        }
         return new ActionWrapper<>(domainStatus, janetExceptionWrapper, userEntities.progress, users);
     }
 }
