@@ -8,7 +8,7 @@ import com.cleanappsample.di.modules.ApplicationModule;
 import com.cleanappsample.di.modules.UtilsModule;
 import com.cleanappsample.domain.executor.PostExecutionThread;
 import com.cleanappsample.domain.executor.ThreadExecutor;
-import com.cleanappsample.repository.UserDataRepository;
+import com.cleanappsample.domain.repository.UserRepository;
 
 import dagger.Component;
 import io.techery.presenta.addition.ActionBarOwner;
@@ -25,7 +25,7 @@ public interface ApplicationComponent {
 
     UserCacheImpl userCache();
 
-    UserDataRepository userRepository();
+    UserRepository userRepository();
 
     ThreadExecutor threadExecutor();
 

@@ -50,7 +50,7 @@ public class ApplicationModule {
 
     @Provides
     @ApplicationScope
-    UserDataRepository provideUserRepository() {
+    UserRepository provideUserRepository() {
         return new UserDataRepository();
     }
 

@@ -31,13 +31,7 @@ import io.techery.presenta.di.ScreenScope;
 @Module
 public class UserModule {
 
-  private int userId = -1;
-
   public UserModule() {}
-
-  public UserModule(int userId) {
-    this.userId = userId;
-  }
 
   @Provides
   @ScreenScope(FriendListScreen.class)

@@ -59,16 +59,10 @@ public class FriendListScreen extends Path {
         UserDataMapper userMapper;
         @Inject
         UserCacheImpl userCache;
-        @Inject
-        PostExecutionThread postExecutionThread;
-        @Inject
-        ThreadExecutor threadExecutor;
-        @Inject
-        UserDataRepository userDataRepository;
 
         @Inject
-        public Presenter() {
-            this.getUserListUserCase = new GetUserList(userDataRepository, threadExecutor, postExecutionThread);
+        public Presenter(@Named("userList") UseCase getUserListUserCase) {
+            this.getUserListUserCase = getUserListUserCase;
         }
 
         @Override
