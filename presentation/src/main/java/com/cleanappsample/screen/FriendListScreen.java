@@ -21,9 +21,13 @@ import com.cleanappsample.MainActivity;
 import com.cleanappsample.R;
 import com.cleanappsample.UIThread;
 import com.cleanappsample.cache.UserCacheImpl;
+import com.cleanappsample.di.UserModule;
 import com.cleanappsample.domain.ActionWrapper;
+import com.cleanappsample.domain.executor.PostExecutionThread;
+import com.cleanappsample.domain.executor.ThreadExecutor;
 import com.cleanappsample.domain.interactor.GetUserList;
 import com.cleanappsample.domain.interactor.UseCase;
+import com.cleanappsample.domain.repository.UserRepository;
 import com.cleanappsample.entity.UserEntity;
 import com.cleanappsample.executor.JobExecutor;
 import com.cleanappsample.mapper.UserDataMapper;
@@ -34,6 +38,7 @@ import com.cleanappsample.view.FriendListView;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import flow.Flow;
 import flow.path.Path;
@@ -48,16 +53,22 @@ public class FriendListScreen extends Path {
 
     @ScreenScope(FriendListScreen.class)
     public static class Presenter extends ViewPresenter<FriendListView> {
-        private final UseCase getUserListUserCase;
+        UseCase getUserListUserCase;
         List<UserModel> friends;
         @Inject
         UserDataMapper userMapper;
         @Inject
         UserCacheImpl userCache;
+        @Inject
+        PostExecutionThread postExecutionThread;
+        @Inject
+        ThreadExecutor threadExecutor;
+        @Inject
+        UserDataRepository userDataRepository;
 
         @Inject
         public Presenter() {
-            this.getUserListUserCase = new GetUserList(new UserDataRepository(), new JobExecutor(), new UIThread());
+            this.getUserListUserCase = new GetUserList(userDataRepository, threadExecutor, postExecutionThread);
         }
 
         @Override
@@ -97,10 +108,9 @@ public class FriendListScreen extends Path {
     }
 
     @ScreenScope(FriendListScreen.class)
-    @dagger.Component(dependencies = MainActivity.Component.class)
+    @dagger.Component(dependencies = MainActivity.Component.class, modules = UserModule.class)
     public interface Component {
         void inject(FriendListView friendListView);
-        void inject(UserDataRepository userDataRepository);
     }
 
 }

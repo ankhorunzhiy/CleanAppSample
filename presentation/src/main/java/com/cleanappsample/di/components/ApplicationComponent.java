@@ -6,6 +6,9 @@ import com.cleanappsample.cache.UserCacheImpl;
 import com.cleanappsample.di.RootModule;
 import com.cleanappsample.di.modules.ApplicationModule;
 import com.cleanappsample.di.modules.UtilsModule;
+import com.cleanappsample.domain.executor.PostExecutionThread;
+import com.cleanappsample.domain.executor.ThreadExecutor;
+import com.cleanappsample.repository.UserDataRepository;
 
 import dagger.Component;
 import io.techery.presenta.addition.ActionBarOwner;
@@ -21,4 +24,10 @@ public interface ApplicationComponent {
     ActionBarOwner actionBarOwner();
 
     UserCacheImpl userCache();
+
+    UserDataRepository userRepository();
+
+    ThreadExecutor threadExecutor();
+
+    PostExecutionThread postExecutionThread();
 }

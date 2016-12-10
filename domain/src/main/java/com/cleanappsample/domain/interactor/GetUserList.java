@@ -33,6 +33,7 @@ public class GetUserList extends UseCase {
 
   private final UserRepository userRepository;
 
+  @Inject
   public GetUserList(UserRepository userRepository, ThreadExecutor threadExecutor,
                      PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);

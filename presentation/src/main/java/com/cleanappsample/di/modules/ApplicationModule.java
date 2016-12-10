@@ -3,7 +3,12 @@ package com.cleanappsample.di.modules;
 import android.content.Context;
 
 import com.cleanappsample.CleanSampleApplication;
+import com.cleanappsample.UIThread;
 import com.cleanappsample.cache.PreferenceManager;
+import com.cleanappsample.domain.executor.PostExecutionThread;
+import com.cleanappsample.domain.executor.ThreadExecutor;
+import com.cleanappsample.domain.repository.UserRepository;
+import com.cleanappsample.executor.JobExecutor;
 import com.cleanappsample.repository.UserDataRepository;
 
 import dagger.Module;
@@ -30,5 +35,24 @@ public class ApplicationModule {
     PreferenceManager providePreferenceHelper(Context context){
         return new PreferenceManager(context);
     }
+
+    @Provides
+    @ApplicationScope
+    ThreadExecutor provideThreadExecutor() {
+        return new JobExecutor();
+    }
+
+    @Provides
+    @ApplicationScope
+    PostExecutionThread providePostExecutionThread() {
+        return new UIThread();
+    }
+
+    @Provides
+    @ApplicationScope
+    UserDataRepository provideUserRepository() {
+        return new UserDataRepository();
+    }
+
 
 }
